@@ -4,7 +4,8 @@ export const CartContext = React.createContext({
     items: [],
     totalCount: 0,
     addItem: (item) => { },
-    removeItem: (id) => { }
+    removeItem: (id) => { },
+    clearCart: () => { }
 });
 
 const defaultCartState = {
@@ -53,6 +54,10 @@ const cartReducer = (state, actions) => {
             totalAmount: updatedTotalAmount
         }
     }
+
+    if (actions.type === 'REMOVE_ALL') {
+        return defaultCartState;
+    }
     return defaultCartState;
 }
 
@@ -67,11 +72,15 @@ const CartContextProvider = (props) => {
         updateCartState({ type: 'REMOVE_ITEM', payload: id });
     }
 
+    const clearCart = () => {
+        updateCartState({ type: 'REMOVE_ALL' });
+    }
     const cartContex = {
         items: cartState.items,
         totalCount: cartState.totalAmount,
         addItem: addItemHandler,
-        removeItem: removeItemHandler
+        removeItem: removeItemHandler,
+        clearCart
     };
 
 
